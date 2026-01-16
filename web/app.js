@@ -1,7 +1,7 @@
 // ======================
 // CONFIG
 // ======================
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://vattunongnghieptienlien.onrender.com";
 const fmtMoney = (n) => (Number(n || 0)).toLocaleString("vi-VN") + " ₫";
 const nowISO = () => new Date().toISOString();
 const uid = (prefix) => prefix + Math.random().toString(16).slice(2) + Date.now().toString(16);
