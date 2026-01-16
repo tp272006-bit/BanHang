@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "shopName": "Vật Tư Nông Nghiệp Tiến Liên",
+    "categories": [
+      "thuốc trừ sâu",
+      "phân bón",
+      "cây cảnh",
+      "hạt rau",
+      "dụng cụ"
+    ]
+  },
+  "seasonPests": [
+    {
+      "id": "p1",
+      "name": "Rầy nâu",
+      "note": "Theo dõi giai đoạn lúa đẻ nhánh - làm đòng",
+      "risk": "cao"
+    }
+  ],
+  "articles": [],
+  "products": [],
+  "customers": [
+    {
+      "id": "cabce8e7026563819bc810ce04",
+      "name": "liên",
+      "phone": "0377319588",
+      "commune": "nam tiến",
+      "village": "nhân vực",
+      "addressDetail": "dsfsdf",
+      "createdAt": "2026-01-16T18:28:23.172Z"
+    },
+    {
+      "id": "c81a481dd45bb519bc8110c34",
+      "name": "tiến",
+      "phone": "0399543191",
+      "commune": "nam tiến",
+      "village": "văn minh",
+      "addressDetail": "",
+      "createdAt": "2026-01-16T18:28:39.092Z"
+    }
+  ],
+  "orders": []
+}
