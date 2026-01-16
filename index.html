@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vật Tư Nông Nghiệp Tiến Liên</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="brand">
+        <div class="logo">TL</div>
+        <div>
+            <h1 id="shopTitle">Vật Tư Nông Nghiệp Tiến Liên</h1>
+            <p class="muted">Quản lý sản phẩm • sâu bệnh mùa vụ • khách hàng • bán hàng</p>
+        </div>
+    </div>
+
+    <div class="top-actions">
+        <div class="pill online">
+            <span class="dot"></span> API: <span id="apiStatus">đang kiểm tra...</span>
+        </div>
+        <button class="btn ghost" id="btnReload">Tải lại dữ liệu</button>
+    </div>
+</header>
+
+<main class="layout">
+    <aside class="sidebar">
+        <div class="nav">
+            <button class="nav-item active" data-view="dashboard">Tổng quan</button>
+            <button class="nav-item" data-view="products">Sản phẩm</button>
+            <button class="nav-item" data-view="customers">Khách hàng</button>
+            <button class="nav-item" data-view="pos">Bán hàng</button>
+            <button class="nav-item" data-view="orders">Lịch sử giao dịch</button>
+        </div>
+
+        <div class="card tip">
+            <div class="card-title">Mẹo</div>
+            <div class="muted small">
+                Mọi dữ liệu được lưu trong <b>server/db.json</b>. Sửa/xóa/thêm là lưu thật.
+                Mày có thể mở rộng thêm: công nợ, in hóa đơn, phân quyền, báo cáo…
+            </div>
+        </div>
+    </aside>
+
+    <section class="content">
+
+        <!-- DASHBOARD -->
+        <div class="view" id="view-dashboard">
+            <div class="grid2">
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Sâu bệnh mùa vụ</div>
+                            <div class="muted small">Thêm / sửa / xóa để cập nhật theo mùa</div>
+                        </div>
+                        <button class="btn" id="btnAddPest">+ Thêm sâu/bệnh</button>
+                    </div>
+                    <div id="pestList" class="list"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Bài hướng dẫn (bài báo)</div>
+                            <div class="muted small">Soạn nội dung hướng dẫn nông dân</div>
+                        </div>
+                        <button class="btn" id="btnAddArticle">+ Thêm bài</button>
+                    </div>
+                    <div id="articleList" class="list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="view hidden" id="view-products">
+            <div class="card">
+                <div class="card-head">
+                    <div>
+                        <div class="card-title">Sản phẩm</div>
+                        <div class="muted small">Nhiều ảnh • giá • mô tả • tồn kho • danh mục</div>
+                    </div>
+                    <button class="btn" id="btnAddProduct">+ Thêm sản phẩm</button>
+                </div>
+
+                <div class="toolbar">
+                    <input class="input" id="productSearch" placeholder="Tìm theo tên..." />
+                    <div class="chips" id="categoryChips"></div>
+                    <button class="btn ghost" id="btnClearFilter">Bỏ lọc</button>
+                </div>
+
+                <div id="productGrid" class="product-grid"></div>
+            </div>
+        </div>
+
+        <!-- CUSTOMERS -->
+        <div class="view hidden" id="view-customers">
+            <div class="grid2">
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Khách hàng</div>
+                            <div class="muted small">Tìm nhanh theo tên / số điện thoại</div>
+                        </div>
+                        <button class="btn" id="btnAddCustomer">+ Thêm khách</button>
+                    </div>
+
+                    <div class="toolbar">
+                        <input class="input" id="customerSearch" placeholder="Tìm khách hàng..." />
+                    </div>
+
+                    <div id="customerList" class="list"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Quản lý theo khu vực</div>
+                            <div class="muted small">Gom theo <b>Xã → Thôn</b> để dễ quản lý</div>
+                        </div>
+                    </div>
+                    <div id="areaGroup" class="list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POS -->
+        <div class="view hidden" id="view-pos">
+            <div class="grid2">
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Bán hàng nhanh</div>
+                            <div class="muted small">Nhập SĐT → tự hiện khách (nếu có) → chọn sản phẩm → tự tính tiền</div>
+                        </div>
+                    </div>
+
+                    <div class="form">
+                        <div class="row">
+                            <div class="field">
+                                <label>Số điện thoại</label>
+                                <input class="input" id="posPhone" placeholder="VD: 090..." />
+                                <div class="muted small">Mẹo: gõ số rồi Enter để tra nhanh</div>
+                            </div>
+                            <div class="field">
+                                <label>Tên khách</label>
+                                <input class="input" id="posName" placeholder="Tên khách..." />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="field">
+                                <label>Xã</label>
+                                <input class="input" id="posCommune" placeholder="VD: Xã Tiến Liên" />
+                            </div>
+                            <div class="field">
+                                <label>Thôn</label>
+                                <input class="input" id="posVillage" placeholder="VD: Thôn 1" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Địa chỉ chi tiết</label>
+                            <input class="input" id="posAddressDetail" placeholder="VD: gần chợ / nhà văn hóa..." />
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="row">
+                            <div class="field">
+                                <label>Danh mục</label>
+                                <select class="input" id="posCategory"></select>
+                            </div>
+                            <div class="field">
+                                <label>Chọn sản phẩm</label>
+                                <select class="input" id="posProduct"></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="field">
+                                <label>Số lượng</label>
+                                <input class="input" id="posQty" type="number" min="1" value="1" />
+                            </div>
+                            <div class="field">
+                                <label>&nbsp;</label>
+                                <button class="btn" id="btnAddToCart">+ Thêm vào giỏ</button>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="cart">
+                            <div class="cart-head">
+                                <div class="card-title">Giỏ hàng</div>
+                                <button class="btn ghost" id="btnClearCart">Xóa giỏ</button>
+                            </div>
+                            <div id="cartList" class="list"></div>
+
+                            <div class="total">
+                                <div class="muted">Tổng tiền</div>
+                                <div class="money" id="cartTotal">0 ₫</div>
+                            </div>
+
+                            <div class="field">
+                                <label>Ghi chú</label>
+                                <input class="input" id="posNote" placeholder="VD: giao chiều nay / thiếu 1 bao..." />
+                            </div>
+
+                            <button class="btn big" id="btnCheckout">✓ Hoàn tất giao dịch</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Gợi ý nhanh</div>
+                            <div class="muted small">Theo dõi tồn kho & sản phẩm bán chạy</div>
+                        </div>
+                    </div>
+
+                    <div class="kpi">
+                        <div class="kpi-item">
+                            <div class="muted small">Số sản phẩm</div>
+                            <div class="kpi-num" id="kpiProducts">0</div>
+                        </div>
+                        <div class="kpi-item">
+                            <div class="muted small">Số khách hàng</div>
+                            <div class="kpi-num" id="kpiCustomers">0</div>
+                        </div>
+                        <div class="kpi-item">
+                            <div class="muted small">Số giao dịch</div>
+                            <div class="kpi-num" id="kpiOrders">0</div>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="card-title">Sản phẩm sắp hết</div>
+                    <div class="muted small">Stock ≤ 5</div>
+                    <div id="lowStockList" class="list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDERS -->
+        <div class="view hidden" id="view-orders">
+            <div class="card">
+                <div class="card-head">
+                    <div>
+                        <div class="card-title">Lịch sử giao dịch</div>
+                        <div class="muted small">Xem theo thời gian, khách hàng, tổng tiền</div>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+                    <input class="input" id="orderSearch" placeholder="Tìm theo tên / SĐT..." />
+                </div>
+
+                <div id="orderList" class="list"></div>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<!-- MODAL -->
+<div class="modal hidden" id="modal">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-card">
+        <div class="modal-head">
+            <div class="modal-title" id="modalTitle">Modal</div>
+            <button class="btn ghost" id="btnCloseModal">Đóng</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-foot" id="modalFoot"></div>
+    </div>
+</div>
+
+<script defer src="./app.js"></script>
+</body>
+</html>
+
