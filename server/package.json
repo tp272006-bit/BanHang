@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "json-server --watch db.json --port 3000"
+    "dev": "json-server --watch db.json --port 3000",
+    "start": "node server.js"
   },
   "dependencies": {
     "json-server": "^0.17.4"
   }
 }
+
